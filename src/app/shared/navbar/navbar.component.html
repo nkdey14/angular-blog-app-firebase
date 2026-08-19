@@ -1,0 +1,153 @@
+<nav
+  class="sticky top-0 z-50 border-b border-slate-700/50 bg-[#111827] shadow-lg"
+>
+  <div
+    class="mx-auto flex min-h-[72px] max-w-7xl items-center px-4 sm:px-6 lg:px-8"
+  >
+    <!-- Logo / Brand -->
+    <a routerLink="/" class="flex items-center gap-3 no-underline">
+      <!-- Logo -->
+      <div class="flex h-11 w-11 items-center justify-center overflow-hidden">
+        <img
+          src="assets/logo.jfif"
+          alt="Blog Logo"
+          class="h-full w-full object-contain"
+        />
+      </div>
+
+      <!-- Brand Text -->
+      <div class="flex flex-col leading-none">
+        <span class="text-xl font-extrabold tracking-tight text-white">
+          Blog
+        </span>
+
+        <span
+          class="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-400"
+        >
+          POST
+        </span>
+      </div>
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button
+      type="button"
+      class="ml-auto flex h-10 w-10 items-center justify-center rounded-lg border border-slate-700 text-slate-300 transition hover:bg-slate-800 hover:text-white lg:hidden"
+      (click)="isMenuOpen = !isMenuOpen"
+      [attr.aria-expanded]="isMenuOpen"
+      aria-label="Toggle navigation"
+    >
+      <i class="bi text-lg" [ngClass]="isMenuOpen ? 'bi-x-lg' : 'bi-list'"></i>
+    </button>
+
+    <!-- Navigation -->
+    <div
+      class="absolute left-0 right-0 top-[72px] border-b border-slate-700 bg-[#111827] px-4 py-4 shadow-xl lg:static lg:ml-10 lg:flex lg:flex-1 lg:items-center lg:justify-between lg:border-0 lg:p-0 lg:shadow-none"
+      [ngClass]="isMenuOpen ? 'block' : 'hidden lg:flex'"
+    >
+      <!-- Navigation Links -->
+      <ul class="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-2">
+        <!-- Home -->
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="bg-indigo-500/15 text-white"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="isMenuOpen = false"
+            class="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-300 no-underline transition hover:bg-slate-800 hover:text-white"
+          >
+            <i class="bi bi-house-door"></i>
+            <span>Home</span>
+          </a>
+        </li>
+
+        <!-- Posts -->
+        <li>
+          <a
+            routerLink="/employees"
+            routerLinkActive="bg-indigo-500/15 text-white"
+            (click)="isMenuOpen = false"
+            class="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-300 no-underline transition hover:bg-slate-800 hover:text-white"
+          >
+            <i class="bi bi-journal-text"></i>
+            <span>Posts</span>
+          </a>
+        </li>
+
+        <!-- Categories -->
+        <li>
+          <a
+            routerLink="/categories"
+            routerLinkActive="bg-indigo-500/15 text-white"
+            (click)="isMenuOpen = false"
+            class="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-300 no-underline transition hover:bg-slate-800 hover:text-white"
+          >
+            <i class="bi bi-grid"></i>
+            <span>Categories</span>
+          </a>
+        </li>
+
+        <!-- About -->
+        <li>
+          <a
+            routerLink="/about"
+            routerLinkActive="bg-indigo-500/15 text-white"
+            (click)="isMenuOpen = false"
+            class="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-300 no-underline transition hover:bg-slate-800 hover:text-white"
+          >
+            <i class="bi bi-info-circle"></i>
+            <span>About</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right Side -->
+      <div
+        class="mt-4 flex items-center gap-3 border-t border-slate-700 pt-4 lg:mt-0 lg:border-0 lg:pt-0"
+      >
+        <!-- Search -->
+        <button
+          type="button"
+          title="Search"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-600 bg-transparent text-slate-300 transition hover:border-indigo-400 hover:bg-slate-800 hover:text-white"
+        >
+          <i class="bi bi-search text-base"></i>
+        </button>
+
+        <!-- Write Post -->
+        <a
+          routerLink="newPost"
+          (click)="isMenuOpen = false"
+          class="flex flex-1 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-lg shadow-indigo-900/20 transition hover:bg-indigo-500 hover:shadow-indigo-500/20 lg:flex-none"
+        >
+          <i class="bi bi-pencil"></i>
+          <span>Write a Post</span>
+        </a>
+
+        <!-- Profile -->
+        <button
+          type="button"
+          class="flex items-center gap-2 rounded-lg p-1.5 transition hover:bg-slate-800"
+        >
+          <!-- Avatar -->
+          <div
+            class="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-400/10 text-indigo-300"
+          >
+            <i class="bi bi-person text-lg"></i>
+          </div>
+
+          <!-- User Info -->
+          <div class="hidden text-left sm:block">
+            <p class="m-0 text-xs font-semibold text-white">Admin</p>
+
+            <p class="m-0 text-[11px] text-slate-400">Author</p>
+          </div>
+
+          <i
+            class="bi bi-chevron-down hidden text-[10px] text-slate-500 sm:block"
+          ></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

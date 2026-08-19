@@ -1,0 +1,78 @@
+<div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">Create New Post</h2>
+
+  <form [formGroup]="createPostForm" (ngSubmit)="createPost()">
+    <!-- Title -->
+    <div class="mb-5">
+      <label class="block text-gray-700 font-semibold mb-2"> Title </label>
+
+      <input
+        type="text"
+        placeholder="Enter post title"
+        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        formControlName="title"
+      />
+    </div>
+    <div
+      *ngIf="
+        createPostForm.get('title')?.touched &&
+        createPostForm.get('title')?.errors
+      "
+      class="mt-2 text-red-600 text-sm"
+    >
+      <p *ngIf="createPostForm.get('title')?.hasError('required')">
+        Title is required.
+      </p>
+
+      <p *ngIf="createPostForm.get('title')?.hasError('minlength')">
+        Title must be at least 5 characters.
+      </p>
+
+      <p *ngIf="createPostForm.get('title')?.hasError('maxlength')">
+        Title cannot exceed 20 characters.
+      </p>
+    </div>
+
+    <!-- Content -->
+    <div class="mb-6">
+      <label class="block text-gray-700 font-semibold mb-2"> Content </label>
+
+      <textarea
+        rows="8"
+        placeholder="Write your post content..."
+        class="w-full border border-gray-300 rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        formControlName="content"
+      ></textarea>
+    </div>
+    <div
+      *ngIf="
+        createPostForm.get('content')?.touched &&
+        createPostForm.get('content')?.errors
+      "
+      class="mt-2 text-red-600 text-sm"
+    >
+      <p *ngIf="createPostForm.get('content')?.hasError('required')">
+        Content is required.
+      </p>
+
+      <p *ngIf="createPostForm.get('content')?.hasError('minlength')">
+        Content must be at least 20 characters.
+      </p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-4">
+      <button
+        class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+      >
+        Publish Post
+      </button>
+    </div>
+  </form>
+</div>
