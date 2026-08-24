@@ -1,12 +1,7 @@
 import { Component, inject } from '@angular/core';
-import {
-  Firestore,
-  addDoc,
-  collection,
-  doc,
-  setDoc,
-} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { BlogPostsService } from '../../services/blog-posts.service';
 
 @Component({
   selector: 'app-create-post',
@@ -14,8 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./create-post.component.css'],
 })
 export class CreatePostComponent {
-  // created firestore reference
-  private fireStore = inject(Firestore);
+  private postService = inject(BlogPostsService);
 
   createPostForm = new FormGroup({
     title: new FormControl('', [
@@ -34,31 +28,13 @@ export class CreatePostComponent {
       this.createPostForm.markAllAsTouched();
       return;
     }
-    console.log(this.createPostForm.value.title);
-    console.log(this.createPostForm.value.content);
 
-    // const postCollectionReference = collection(this.fireStore, 'blog-posts');
+    const { title, content } = this.createPostForm.getRawValue();
+    if (title === null || content === null) {
+      return;
+    }
 
-    // addDoc(postCollectionReference, {
-    //   title: this.createPostForm.value.title,
-    //   content: this.createPostForm.value.content,
-    //   publishedOn: new Date(),
-    //   //slug
-    //   //coverurl
-    // });
-
-    const postDocumentReference = doc(
-      this.fireStore,
-      'blog-posts',
-      'this-is-a-title-123',
-    );
-
-    setDoc(postDocumentReference, {
-      title: this.createPostForm.value.title,
-      content: this.createPostForm.value.content,
-      publishedOn: new Date(),
-    });
-
+    this.postService.createBlogPost(title, content);
     this.createPostForm.reset();
   }
 }

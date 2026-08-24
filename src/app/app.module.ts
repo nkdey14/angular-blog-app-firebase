@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { CreatePostComponent } from './features/post/pages/create-post/create-post.component';
 import { environment } from '../environments/environment';
+import { BlogPostsService } from './features/post/services/blog-posts.service';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, CreatePostComponent],
