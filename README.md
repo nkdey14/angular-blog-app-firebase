@@ -72,3 +72,5 @@ ng generate service service-name
 ```
 
 For more information, see the [Angular CLI Overview and Command Reference](https://angular.io/cli).
+
+<img width="1286" height="665" alt="image" src="https://github.com/user-attachments/assets/984ed06c-bca7-4410-918f-cc2c1855fea5" />
