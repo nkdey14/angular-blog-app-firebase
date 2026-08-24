@@ -10,6 +10,7 @@ import { BlogPostsService } from '../../services/blog-posts.service';
 })
 export class CreatePostComponent {
   private postService = inject(BlogPostsService);
+  selectedImage: File | null = null;
 
   createPostForm = new FormGroup({
     title: new FormControl('', [
@@ -34,7 +35,13 @@ export class CreatePostComponent {
       return;
     }
 
-    this.postService.createBlogPost(title, content);
+    this.postService.createBlogPost(title, content, this.selectedImage);
     this.createPostForm.reset();
+    this.selectedImage = null;
+  }
+
+  selectImage(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedImage = input.files?.[0] ?? null;
   }
 }
