@@ -1,27 +1,74 @@
 # VVlog
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+VVlog is an Angular blog application backed by Firebase. Posts are created through the app and stored in Cloud Firestore, with AngularFire providing the Firebase integration.
+
+The project uses Angular 16.2.16, AngularFire 7.6.1, and Firebase 10.12.5.
+
+## Prerequisites
+
+- Node.js and npm
+- A Firebase project with Cloud Firestore enabled
+
+## Installation
+
+Install the project dependencies from the project directory:
+
+```bash
+npm install
+```
+
+## Firebase configuration
+
+Firebase configuration is stored in:
+
+- `src/environments/environment.development.ts` for local development
+- `src/environments/environment.ts` for production builds
+
+Update the `firebase` object in these files with the configuration from your Firebase project. The Firebase web configuration is safe to include in a frontend application, but protect your data with Firebase Authentication and Firestore/Storage security rules.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run the development server:
 
-## Code scaffolding
+```bash
+npm start
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Navigate to `http://localhost:4200/`. The application automatically reloads when source files change.
+
+## Application routes
+
+- `/newPost` - Create a new blog post
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Build the application for production:
+
+```bash
+npm run build
+```
+
+The build artifacts are written to the `dist/v-vlog/` directory. To build with the development environment configuration, run `npm run build -- --configuration development`.
+
+## Development watch mode
+
+```bash
+npm run watch
+```
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run the unit tests with [Karma](https://karma-runner.github.io):
 
-## Running end-to-end tests
+```bash
+npm test
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Useful Angular CLI commands
 
-## Further help
+```bash
+ng generate component component-name
+ng generate service service-name
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+For more information, see the [Angular CLI Overview and Command Reference](https://angular.io/cli).

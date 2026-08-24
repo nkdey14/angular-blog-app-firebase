@@ -1,5 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -8,6 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./create-post.component.css'],
 })
 export class CreatePostComponent {
+  // created firestore reference
   private fireStore = inject(Firestore);
 
   createPostForm = new FormGroup({
@@ -30,14 +37,26 @@ export class CreatePostComponent {
     console.log(this.createPostForm.value.title);
     console.log(this.createPostForm.value.content);
 
-    const postCollectionReference = collection(this.fireStore, 'blog-posts');
+    // const postCollectionReference = collection(this.fireStore, 'blog-posts');
 
-    addDoc(postCollectionReference, {
+    // addDoc(postCollectionReference, {
+    //   title: this.createPostForm.value.title,
+    //   content: this.createPostForm.value.content,
+    //   publishedOn: new Date(),
+    //   //slug
+    //   //coverurl
+    // });
+
+    const postDocumentReference = doc(
+      this.fireStore,
+      'blog-posts',
+      'this-is-a-title-123',
+    );
+
+    setDoc(postDocumentReference, {
       title: this.createPostForm.value.title,
       content: this.createPostForm.value.content,
       publishedOn: new Date(),
-      //slug
-      //coverurl
     });
 
     this.createPostForm.reset();
