@@ -9,36 +9,39 @@ import { BlogPostHelper } from 'src/app/helper/blogposts-helper';
 })
 export class BlogPostsService {
   private fireStore = inject(Firestore);
-  //Step 1 : for Image Upload
   private storage = inject(Storage);
 
-  constructor() {}
-
-  //Step 2: add image:File
   async createBlogPost(title: string, content: string, image: File | null) {
     const slug = BlogPostHelper.createSlug(title);
+
     const postDocumentReference = doc(this.fireStore, 'blog-posts', slug);
-    //Step 3
+
     let imageUrl = '';
 
-    //Step 4: Upload image if selected
+    // Upload image
     if (image) {
-      const storageRef = ref(
-        this.storage,
-        `images/${slug}-${Date.now()}-${image.name}`,
-      );
+      const fileName = `${slug}-${Date.now()}-${image.name}`;
 
-      //Step 5: get image url after upload
+      const storageRef = ref(this.storage, `images/${fileName}`);
+
       await uploadBytes(storageRef, image);
 
       imageUrl = await getDownloadURL(storageRef);
     }
 
+    // Save post in Firestore
     await setDoc(postDocumentReference, {
+      title: title,
+      content: content,
+      imageUrl: imageUrl,
+      publishedOn: new Date(),
+    });
+
+    return {
+      slug,
       title,
       content,
       imageUrl,
-      publishedOn: new Date(),
-    });
+    };
   }
 }

@@ -10,38 +10,77 @@ import { BlogPostsService } from '../../services/blog-posts.service';
 })
 export class CreatePostComponent {
   private postService = inject(BlogPostsService);
+
   selectedImage: File | null = null;
+
+  isSubmitting = false;
 
   createPostForm = new FormGroup({
     title: new FormControl('', [
       Validators.required,
       Validators.minLength(5),
-      Validators.maxLength(10),
+      Validators.maxLength(20),
     ]),
+
     content: new FormControl('', [
       Validators.required,
-      Validators.minLength(10),
+      Validators.minLength(20),
     ]),
   });
 
-  createPost() {
+  async createPost() {
+    // Validate form
     if (this.createPostForm.invalid) {
       this.createPostForm.markAllAsTouched();
+
       return;
     }
 
     const { title, content } = this.createPostForm.getRawValue();
-    if (title === null || content === null) {
+
+    if (!title || !content) {
       return;
     }
 
-    this.postService.createBlogPost(title, content, this.selectedImage);
-    this.createPostForm.reset();
-    this.selectedImage = null;
+    try {
+      this.isSubmitting = true;
+
+      // Create post + upload image
+      const createdPost = await this.postService.createBlogPost(
+        title,
+        content,
+        this.selectedImage,
+      );
+
+      console.log('Post created successfully:', createdPost);
+
+      // Reset form after successful submission
+      this.createPostForm.reset();
+
+      // Reset selected image
+      this.selectedImage = null;
+    } catch (error) {
+      console.error('Error creating blog post:', error);
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 
   selectImage(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.selectedImage = input.files?.[0] ?? null;
+
+    if (input.files && input.files.length > 0) {
+      this.selectedImage = input.files[0];
+
+      console.log('Selected image:', this.selectedImage);
+    } else {
+      this.selectedImage = null;
+    }
+  }
+
+  cancelPost() {
+    this.createPostForm.reset();
+
+    this.selectedImage = null;
   }
 }
