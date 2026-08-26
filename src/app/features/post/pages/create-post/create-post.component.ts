@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BlogPostsService } from '../../services/blog-posts.service';
@@ -45,22 +46,27 @@ export class CreatePostComponent {
     try {
       this.isSubmitting = true;
 
-      // Create post + upload image
+      console.log('Creating post...');
+
       const createdPost = await this.postService.createBlogPost(
         title,
         content,
         this.selectedImage,
       );
 
-      console.log('Post created successfully:', createdPost);
+      console.log('Created post:', createdPost);
 
       // Reset form after successful submission
       this.createPostForm.reset();
 
-      // Reset selected image
+      // Clear image
       this.selectedImage = null;
+
+      alert('Post published successfully!');
     } catch (error) {
       console.error('Error creating blog post:', error);
+
+      alert('Failed to publish the post.');
     } finally {
       this.isSubmitting = false;
     }

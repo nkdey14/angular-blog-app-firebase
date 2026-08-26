@@ -1,9 +1,8 @@
 <div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
-  <!-- Heading -->
   <h2 class="text-3xl font-bold text-gray-800 mb-6">Create New Post</h2>
 
   <form [formGroup]="createPostForm" (ngSubmit)="createPost()">
-    <!-- ================= TITLE ================= -->
+    <!-- TITLE -->
 
     <div class="mb-5">
       <label class="block text-gray-700 font-semibold mb-2"> Title </label>
@@ -15,7 +14,6 @@
         class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
 
-      <!-- Title Validation -->
       <div
         *ngIf="
           createPostForm.get('title')?.touched &&
@@ -37,7 +35,7 @@
       </div>
     </div>
 
-    <!-- ================= CONTENT ================= -->
+    <!-- CONTENT -->
 
     <div class="mb-6">
       <label class="block text-gray-700 font-semibold mb-2"> Content </label>
@@ -49,7 +47,6 @@
         class="w-full border border-gray-300 rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       ></textarea>
 
-      <!-- Content Validation -->
       <div
         *ngIf="
           createPostForm.get('content')?.touched &&
@@ -67,7 +64,7 @@
       </div>
     </div>
 
-    <!-- ================= COVER IMAGE ================= -->
+    <!-- COVER IMAGE -->
 
     <div class="mb-6">
       <label class="block text-gray-700 font-semibold mb-2">
@@ -81,7 +78,6 @@
         class="w-full border border-gray-300 rounded-lg px-4 py-3 cursor-pointer"
       />
 
-      <!-- Selected Image -->
       <div *ngIf="selectedImage" class="mt-3 text-sm text-gray-600">
         Selected image:
 
@@ -91,10 +87,11 @@
       </div>
     </div>
 
-    <!-- ================= BUTTONS ================= -->
+    <!-- BUTTONS -->
 
     <div class="flex justify-end gap-4">
-      <!-- Cancel -->
+      <!-- CANCEL -->
+
       <button
         type="button"
         (click)="cancelPost()"
@@ -104,7 +101,8 @@
         Cancel
       </button>
 
-      <!-- Publish -->
+      <!-- PUBLISH -->
+
       <button
         type="submit"
         [disabled]="isSubmitting"
