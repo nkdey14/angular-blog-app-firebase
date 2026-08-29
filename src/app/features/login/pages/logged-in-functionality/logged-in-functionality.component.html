@@ -1,12 +1,14 @@
-<div
-  *ngIf="authService.isLoggedIn; else loggedOut"
-  class="hidden md:flex items-center ml-auto"
->
-  <app-logged-in-functionality></app-logged-in-functionality>
-</div>
+<div class="flex items-center gap-4">
+  <a
+    routerLink="/create-post"
+    class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300"
+  >
+    Create Post
+  </a>
 
-<ng-template #loggedOut>
-  <div class="hidden md:flex items-center ml-auto">
-    <app-logged-out-functionality></app-logged-out-functionality>
-  </div>
-</ng-template>
+  <button
+    class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300"
+  >
+    Logout
+  </button>
+</div>

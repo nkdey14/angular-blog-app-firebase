@@ -1,12 +1,28 @@
-<div
-  *ngIf="authService.isLoggedIn; else loggedOut"
-  class="hidden md:flex items-center ml-auto"
->
-  <app-logged-in-functionality></app-logged-in-functionality>
-</div>
+<nav class="bg-blue-600 text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex items-center h-16">
+      <!-- Logo -->
+      <div class="text-2xl font-bold">
+        <a routerLink="/">
+          <img src="assets/logo.jfif" width="40" height="40" alt="Logo" />
+        </a>
+      </div>
 
-<ng-template #loggedOut>
-  <div class="hidden md:flex items-center ml-auto">
-    <app-logged-out-functionality></app-logged-out-functionality>
+      <!-- Authentication functionality -->
+      <div
+        *ngIf="authService.isLoggedIn; else loggedOut"
+        class="hidden md:flex items-center ml-auto"
+      >
+        <app-logged-in-functionality></app-logged-in-functionality>
+      </div>
+
+      <ng-template #loggedOut>
+        <div class="hidden md:flex items-center ml-auto">
+          <app-logged-out-functionality></app-logged-out-functionality>
+        </div>
+      </ng-template>
+    </div>
   </div>
-</ng-template>
+</nav>
+
+<router-outlet></router-outlet>

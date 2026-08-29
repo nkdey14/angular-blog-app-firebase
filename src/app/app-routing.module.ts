@@ -4,6 +4,10 @@ import { CreatePostComponent } from './features/post/pages/create-post/create-po
 
 const routes: Routes = [
   {
+    path: '',
+    component: CreatePostComponent,
+  },
+  {
     path: 'newPost',
     component: CreatePostComponent,
   },

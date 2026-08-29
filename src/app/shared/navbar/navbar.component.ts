@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -9,5 +8,6 @@ import { CommonModule } from '@angular/common';
 })
 export class NavbarComponent {
   isMenuOpen = false;
+
   authService = inject(AuthService);
 }
