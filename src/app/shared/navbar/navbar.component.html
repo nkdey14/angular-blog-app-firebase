@@ -11,13 +11,14 @@
       <!-- Authentication functionality -->
       <div
         *ngIf="authService.isLoggedIn; else loggedOut"
-        class="hidden md:flex items-center ml-auto"
+        class="flex items-center ml-auto"
       >
         <app-logged-in-functionality></app-logged-in-functionality>
       </div>
 
+      <!-- Logged out functionality -->
       <ng-template #loggedOut>
-        <div class="hidden md:flex items-center ml-auto">
+        <div class="flex items-center ml-auto">
           <app-logged-out-functionality></app-logged-out-functionality>
         </div>
       </ng-template>

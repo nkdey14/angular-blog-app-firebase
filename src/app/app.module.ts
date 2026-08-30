@@ -21,9 +21,19 @@ import { CreatePostComponent } from './features/post/pages/create-post/create-po
 import { environment } from '../environments/environment';
 import { LoggedInFunctionalityComponent } from './features/login/pages/logged-in-functionality/logged-in-functionality.component';
 import { LoggedOutFunctionalityComponent } from './features/login/pages/logged-out-functionality/logged-out-functionality.component';
+import { DashboardComponent } from './features/dashboard/pages/dashboard/dashboard.component';
+import { DashboardStatisticsComponent } from './features/dashboard/pages/dashboard/components/dashboard-statistics/dashboard-statistics.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, CreatePostComponent, LoggedInFunctionalityComponent, LoggedOutFunctionalityComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    CreatePostComponent,
+    LoggedInFunctionalityComponent,
+    LoggedOutFunctionalityComponent,
+    DashboardComponent,
+    DashboardStatisticsComponent,
+  ],
 
   imports: [
     BrowserModule,
