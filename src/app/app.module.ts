@@ -23,6 +23,7 @@ import { LoggedInFunctionalityComponent } from './features/login/pages/logged-in
 import { LoggedOutFunctionalityComponent } from './features/login/pages/logged-out-functionality/logged-out-functionality.component';
 import { DashboardComponent } from './features/dashboard/pages/dashboard/dashboard.component';
 import { DashboardStatisticsComponent } from './features/dashboard/pages/dashboard/components/dashboard-statistics/dashboard-statistics.component';
+import { ViewPostsComponent } from './features/post/pages/view-posts/view-posts.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { DashboardStatisticsComponent } from './features/dashboard/pages/dashboa
     LoggedOutFunctionalityComponent,
     DashboardComponent,
     DashboardStatisticsComponent,
+    ViewPostsComponent,
   ],
 
   imports: [

@@ -2,23 +2,82 @@
   <div class="max-w-7xl mx-auto px-4">
     <div class="flex items-center h-16">
       <!-- Logo -->
-      <div class="text-2xl font-bold">
-        <a routerLink="/">
-          <img src="assets/logo.jfif" width="40" height="40" alt="Logo" />
-        </a>
-      </div>
+      <a
+        routerLink="/"
+        class="flex items-center flex-shrink-0"
+        aria-label="Blog home"
+      >
+        <img
+          src="assets/logo.jfif"
+          width="40"
+          height="40"
+          class="h-10 w-10 rounded-full object-cover"
+          alt="Blog Logo"
+        />
+      </a>
 
-      <!-- Authentication functionality -->
+      <!-- Display when user is logged in -->
       <div
         *ngIf="authService.isLoggedIn; else loggedOut"
-        class="flex items-center ml-auto"
+        class="ml-auto flex items-center gap-2 sm:gap-3"
       >
+        <!-- New Post Button -->
+        <a
+          routerLink="/newPost"
+          routerLinkActive="ring-2 ring-white"
+          class="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-blue-600 transition duration-200 hover:bg-blue-50 sm:px-4"
+        >
+          <!-- Plus Icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+
+          <span class="hidden sm:inline">New Post</span>
+        </a>
+
+        <!-- View Posts Button -->
+        <a
+          routerLink="/posts"
+          routerLinkActive="bg-blue-800"
+          class="flex items-center gap-2 rounded-lg border border-white px-3 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-blue-700 sm:px-4"
+        >
+          <!-- Posts Icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 11H5m14-4H5m14 8H5m14 4H5"
+            />
+          </svg>
+
+          <span class="hidden sm:inline">View Posts</span>
+        </a>
+
+        <!-- Profile Dropdown -->
         <app-logged-in-functionality></app-logged-in-functionality>
       </div>
 
-      <!-- Logged out functionality -->
+      <!-- Display when user is logged out -->
       <ng-template #loggedOut>
-        <div class="flex items-center ml-auto">
+        <div class="ml-auto flex items-center">
           <app-logged-out-functionality></app-logged-out-functionality>
         </div>
       </ng-template>
@@ -26,4 +85,5 @@
   </div>
 </nav>
 
+<!-- Routed page content -->
 <router-outlet></router-outlet>
