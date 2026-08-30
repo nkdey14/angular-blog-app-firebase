@@ -1,0 +1,115 @@
+<section class="min-h-screen bg-gray-100 px-4 py-10">
+  <div class="mx-auto max-w-3xl rounded-xl bg-white p-8 shadow-lg">
+    <div *ngIf="isLoading" class="py-12 text-center text-gray-500">
+      Loading post...
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+      <h1 class="mb-6 text-3xl font-bold text-gray-800">Edit Post</h1>
+
+      <div
+        *ngIf="errorMessage"
+        class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <img
+        *ngIf="currentImageUrl"
+        [src]="currentImageUrl"
+        alt="Current cover image"
+        class="mb-6 h-64 w-full rounded-xl object-cover"
+      />
+
+      <form [formGroup]="editPostForm" (ngSubmit)="updatePost()">
+        <!-- Title -->
+        <div class="mb-5">
+          <label for="title" class="mb-2 block font-semibold text-gray-700">
+            Title
+          </label>
+
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          />
+
+          <div
+            *ngIf="
+              editPostForm.controls.title.touched &&
+              editPostForm.controls.title.errors
+            "
+            class="mt-2 text-sm text-red-600"
+          >
+            <p *ngIf="editPostForm.controls.title.hasError('required')">
+              Title is required.
+            </p>
+
+            <p *ngIf="editPostForm.controls.title.hasError('minlength')">
+              Title must contain at least 5 characters.
+            </p>
+
+            <p *ngIf="editPostForm.controls.title.hasError('maxlength')">
+              Title cannot exceed 20 characters.
+            </p>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="mb-6">
+          <label for="content" class="mb-2 block font-semibold text-gray-700">
+            Content
+          </label>
+
+          <textarea
+            id="content"
+            rows="9"
+            formControlName="content"
+            class="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          ></textarea>
+
+          <p
+            *ngIf="
+              editPostForm.controls.content.touched &&
+              editPostForm.controls.content.hasError('required')
+            "
+            class="mt-2 text-sm text-red-600"
+          >
+            Content is required.
+          </p>
+
+          <p
+            *ngIf="
+              editPostForm.controls.content.touched &&
+              editPostForm.controls.content.hasError('minlength')
+            "
+            class="mt-2 text-sm text-red-600"
+          >
+            Content must contain at least 20 characters.
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-4">
+          <button
+            type="button"
+            (click)="cancelEdit()"
+            [disabled]="isSaving"
+            class="rounded-lg bg-gray-300 px-5 py-2.5 font-semibold text-gray-700 hover:bg-gray-400"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            [disabled]="isSaving"
+            class="rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white hover:bg-blue-700 disabled:opacity-60"
+          >
+            {{ isSaving ? "Updating..." : "Update Post" }}
+          </button>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</section>

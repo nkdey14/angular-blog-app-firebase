@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreatePostComponent } from './features/post/pages/create-post/create-post.component';
 import { ViewPostsComponent } from './features/post/pages/view-posts/view-posts.component';
 import { DashboardComponent } from './features/dashboard/pages/dashboard/dashboard.component';
+import { EditPostComponent } from './features/post/pages/edit-post/edit-post.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+  },
+  {
+    path: 'posts/edit/:id',
+    component: EditPostComponent,
   },
 ];
 

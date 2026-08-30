@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { catchError, Observable, of, tap } from 'rxjs';
 
 import { BlogPost, BlogPostsService } from '../../services/blog-posts.service';
 
@@ -11,35 +10,34 @@ import { BlogPost, BlogPostsService } from '../../services/blog-posts.service';
 export class ViewPostsComponent {
   private blogPostsService = inject(BlogPostsService);
 
-  isLoading = true;
-  errorMessage = '';
+  posts$ = this.blogPostsService.getBlogPosts();
 
-  posts$: Observable<BlogPost[]> = this.blogPostsService.getAllBlogPosts().pipe(
-    tap(() => {
-      this.isLoading = false;
-    }),
-    catchError((error) => {
-      console.error('Error fetching blog posts:', error);
+  deletingPostId: string | null = null;
 
-      this.isLoading = false;
-      this.errorMessage = 'Unable to load posts. Please try again later.';
-
-      return of([]);
-    }),
-  );
-
-  getPublishedDate(
-    publishedOn: Date | { toDate: () => Date } | undefined,
-  ): Date | null {
-    if (!publishedOn) {
-      return null;
+  async deletePost(post: BlogPost): Promise<void> {
+    if (!post.id) {
+      return;
     }
 
-    if (publishedOn instanceof Date) {
-      return publishedOn;
+    const shouldDelete = window.confirm(
+      `Are you sure you want to delete "${post.title}"?`,
+    );
+
+    if (!shouldDelete) {
+      return;
     }
 
-    return publishedOn.toDate();
+    try {
+      this.deletingPostId = post.id;
+
+      await this.blogPostsService.deleteBlogPost(post.id, post.imageUrl);
+    } catch (error) {
+      console.error('Error deleting blog post:', error);
+
+      window.alert('Unable to delete the post. Please try again.');
+    } finally {
+      this.deletingPostId = null;
+    }
   }
 
   trackPost(index: number, post: BlogPost): string | number {
