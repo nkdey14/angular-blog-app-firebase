@@ -13,6 +13,7 @@ export class ViewPostsComponent {
   posts$ = this.blogPostsService.getBlogPosts();
 
   deletingPostId: string | null = null;
+  failedImagePostIds = new Set<string>();
 
   async deletePost(post: BlogPost): Promise<void> {
     if (!post.id) {
@@ -44,7 +45,13 @@ export class ViewPostsComponent {
     return post.id ?? index;
   }
 
-  handleImageError(event: Event): void {
-    (event.target as HTMLImageElement).style.display = 'none';
+  hasFailedImage(post: BlogPost): boolean {
+    return post.id ? this.failedImagePostIds.has(post.id) : false;
+  }
+
+  handleImageError(post: BlogPost): void {
+    if (post.id) {
+      this.failedImagePostIds.add(post.id);
+    }
   }
 }

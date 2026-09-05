@@ -1,6 +1,14 @@
 <div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
   <h2 class="text-3xl font-bold text-gray-800 mb-6">Create New Post</h2>
 
+  <p
+    *ngIf="errorMessage"
+    role="alert"
+    class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700"
+  >
+    {{ errorMessage }}
+  </p>
+
   <form [formGroup]="createPostForm" (ngSubmit)="createPost()">
     <!-- TITLE -->
 

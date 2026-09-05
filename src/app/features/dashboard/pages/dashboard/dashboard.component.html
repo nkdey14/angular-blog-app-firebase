@@ -1,46 +1,99 @@
-<div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
-  <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
+<section class="min-h-screen bg-white px-6 py-8 sm:px-8">
+  <div class="mx-auto max-w-4xl">
+    <h2 class="text-sm font-medium text-gray-500">Posts</h2>
 
-  <app-dashboard-statistics [value]="posts.length" [labelDescription]="'Posts'">
-  </app-dashboard-statistics>
+    <app-dashboard-statistics
+      [value]="posts.length"
+      [labelDescription]="'Posts'"
+    >
+    </app-dashboard-statistics>
 
-  <div class="mt-8">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Published Posts</h3>
+    <div class="mt-10">
+      <h3 class="mb-5 text-2xl font-semibold text-gray-800">Published Posts</h3>
 
-    <div *ngIf="posts.length > 0; else noPosts" class="space-y-4">
-      <div
-        *ngFor="let post of posts; trackBy: trackPost"
-        class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-5 hover:bg-gray-100"
-      >
-        <div class="flex gap-4 items-center">
-          <img
-            [src]="post.imageUrl"
-            [alt]="post.title"
-            (error)="handleImageError($event)"
-            class="w-20 h-20 rounded-lg object-cover"
-          />
-
-          <div>
-            <h4 class="text-lg font-semibold text-gray-900">
-              {{ post.title }}
-            </h4>
-
-            <p class="text-sm text-gray-500 mt-1">
-              Published:
-              {{ post.publishedOn }}
-            </p>
-          </div>
-        </div>
-
-        <button
-          class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+      <div *ngIf="posts.length > 0; else noPosts" class="space-y-4">
+        <article
+          *ngFor="let post of posts; trackBy: trackPost"
+          class="flex min-h-24 items-center justify-between gap-4 rounded-lg border border-gray-200 bg-gray-50 px-5 py-4 transition hover:bg-gray-100"
         >
-          Edit
-        </button>
+          <div class="flex min-w-0 items-center gap-4">
+            <div
+              *ngIf="post.imageUrl && !hasFailedImage(post); else noImage"
+              class="h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white"
+            >
+              <img
+                [src]="post.imageUrl"
+                [alt]="post.title"
+                (error)="handleImageError(post)"
+                class="h-full w-full object-cover"
+              />
+            </div>
+
+            <ng-template #noImage>
+              <div
+                class="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-white text-gray-300"
+                aria-label="No cover image"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-10 w-10"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8 14l2.5-2.5L14 15l2-2 3 3M8.5 8.5h.01"
+                  />
+                </svg>
+              </div>
+            </ng-template>
+
+            <div class="min-w-0">
+              <h4 class="truncate text-lg font-semibold text-gray-900">
+                {{ post.title }}
+              </h4>
+
+              <p class="mt-1 truncate text-sm text-gray-500">
+                Published:
+                {{ getPublishedDate(post.publishedOn) | date: "mediumDate" }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex shrink-0 gap-2">
+            <a
+              [routerLink]="['/posts/edit', post.id]"
+              [class.pointer-events-none]="deletingPostId === post.id"
+              [class.opacity-50]="deletingPostId === post.id"
+              class="rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+            >
+              Edit
+            </a>
+
+            <button
+              type="button"
+              (click)="deletePost(post)"
+              [disabled]="deletingPostId !== null"
+              class="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {{ deletingPostId === post.id ? "Deleting..." : "Delete" }}
+            </button>
+          </div>
+        </article>
       </div>
+      <ng-template #noPosts>
+        <div class="py-10 text-center text-gray-500">
+          No published posts yet.
+        </div>
+      </ng-template>
     </div>
-    <ng-template #noPosts>
-      <div class="text-center py-10 text-gray-500">No published posts yet.</div>
-    </ng-template>
   </div>
-</div>
+</section>

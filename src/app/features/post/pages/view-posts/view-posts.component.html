@@ -54,13 +54,13 @@
         >
           <!-- Post Image -->
           <div
-            *ngIf="post.imageUrl; else noImage"
+            *ngIf="post.imageUrl && !hasFailedImage(post); else noImage"
             class="h-52 overflow-hidden bg-gray-200 dark:bg-gray-800"
           >
             <img
               [src]="post.imageUrl"
               [alt]="post.title"
-              (error)="handleImageError($event)"
+              (error)="handleImageError(post)"
               class="h-full w-full object-cover transition duration-300 hover:scale-105"
             />
           </div>

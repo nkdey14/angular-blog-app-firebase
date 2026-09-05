@@ -15,6 +15,7 @@ export class CreatePostComponent {
   selectedImage: File | null = null;
 
   isSubmitting = false;
+  errorMessage = '';
 
   createPostForm = new FormGroup({
     title: new FormControl('', [
@@ -45,6 +46,7 @@ export class CreatePostComponent {
 
     try {
       this.isSubmitting = true;
+      this.errorMessage = '';
 
       console.log('Creating post...');
 
@@ -66,10 +68,23 @@ export class CreatePostComponent {
     } catch (error) {
       console.error('Error creating blog post:', error);
 
-      alert('Failed to publish the post.');
+      this.errorMessage = this.getCreatePostErrorMessage(error);
     } finally {
       this.isSubmitting = false;
     }
+  }
+
+  private getCreatePostErrorMessage(error: unknown): string {
+    const errorCode =
+      typeof error === 'object' && error !== null && 'code' in error
+        ? error.code
+        : '';
+
+    if (errorCode === 'storage/quota-exceeded') {
+      return 'Image storage is full. Remove the selected image or increase your Firebase Storage quota, then try again.';
+    }
+
+    return 'Failed to publish the post. Please try again.';
   }
 
   selectImage(event: Event) {
