@@ -43,4 +43,8 @@ export class ViewPostsComponent {
   trackPost(index: number, post: BlogPost): string | number {
     return post.id ?? index;
   }
+
+  handleImageError(event: Event): void {
+    (event.target as HTMLImageElement).style.display = 'none';
+  }
 }

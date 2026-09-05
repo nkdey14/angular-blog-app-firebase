@@ -1,158 +1,103 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
 import {
-  Firestore,
   collection,
   collectionData,
   deleteDoc,
   doc,
   docData,
-  orderBy,
-  query,
+  Firestore,
   setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
 
 import {
   Storage,
-  deleteObject,
-  getDownloadURL,
   ref,
+  deleteObject,
   uploadBytes,
+  getDownloadURL,
 } from '@angular/fire/storage';
 
+import { Observable } from 'rxjs';
 import { BlogPostHelper } from 'src/app/helper/blogposts-helper';
+import { BlogPost } from '../model/blogposts.model';
 
-// Blog post structure
-export interface BlogPost {
-  id?: string;
-  title: string;
-  content: string;
-  imageUrl?: string;
-  publishedOn?: Date | { toDate: () => Date };
-  updatedOn?: Date | { toDate: () => Date };
-}
+export { BlogPost } from '../model/blogposts.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogPostsService {
   private fireStore = inject(Firestore);
+
+  //Step 1 : for Image Upload
   private storage = inject(Storage);
 
-  // =================================================
-  // GET ALL POSTS
-  // =================================================
+  constructor() {}
 
-  getBlogPosts(): Observable<BlogPost[]> {
-    const blogPostsCollection = collection(this.fireStore, 'blog-posts');
-
-    const postsQuery = query(
-      blogPostsCollection,
-      orderBy('publishedOn', 'desc'),
-    );
-
-    return collectionData(postsQuery, {
-      idField: 'id',
-    }) as Observable<BlogPost[]>;
-  }
-
-  // =================================================
-  // GET A SINGLE POST
-  // =================================================
-
-  getBlogPostById(postId: string): Observable<BlogPost | undefined> {
-    const postDocumentReference = doc(this.fireStore, 'blog-posts', postId);
-
-    return docData(postDocumentReference, {
-      idField: 'id',
-    }) as Observable<BlogPost | undefined>;
-  }
-
-  // =================================================
-  // CREATE POST
-  // =================================================
-
-  async createBlogPost(
-    title: string,
-    content: string,
-    image: File | null,
-  ): Promise<BlogPost> {
+  //Step 2: add image:File
+  async createBlogPost(title: string, content: string, image: File | null) {
     const slug = BlogPostHelper.createSlug(title);
-
     const postDocumentReference = doc(this.fireStore, 'blog-posts', slug);
-
+    //Step 3
     let imageUrl = '';
 
-    // Upload image to Firebase Storage
+    //Step 4: Upload image if selected
     if (image) {
-      const fileName = `${slug}-${Date.now()}-${image.name}`;
+      const storageRef = ref(
+        this.storage,
+        `images/${slug}-${Date.now()}-${image.name}`,
+      );
 
-      const imageStorageReference = ref(this.storage, `images/${fileName}`);
+      //Step 5: get image url after upload
+      await uploadBytes(storageRef, image, {
+        contentType: image.type,
+      });
 
-      await uploadBytes(imageStorageReference, image);
-
-      imageUrl = await getDownloadURL(imageStorageReference);
+      imageUrl = await getDownloadURL(storageRef);
     }
 
-    const postData = {
+    await setDoc(postDocumentReference, {
       title,
       content,
       imageUrl,
       publishedOn: new Date(),
-    };
-
-    await setDoc(postDocumentReference, postData);
-
-    return {
-      id: slug,
-      ...postData,
-    };
-  }
-
-  // =================================================
-  // UPDATE POST
-  // =================================================
-
-  async updateBlogPost(
-    postId: string,
-    title: string,
-    content: string,
-  ): Promise<void> {
-    const postDocumentReference = doc(this.fireStore, 'blog-posts', postId);
-
-    await updateDoc(postDocumentReference, {
-      title,
-      content,
-      updatedOn: new Date(),
     });
   }
 
-  // =================================================
-  // DELETE POST
-  // =================================================
+  getBlogPosts(): Observable<BlogPost[]> {
+    const postsRef = collection(this.fireStore, 'blog-posts');
 
-  async deleteBlogPost(postId: string, imageUrl?: string): Promise<void> {
-    const postDocumentReference = doc(this.fireStore, 'blog-posts', postId);
+    return collectionData(postsRef, {
+      idField: 'id',
+    }) as Observable<BlogPost[]>;
+  }
 
-    // Delete the post from Firestore
-    await deleteDoc(postDocumentReference);
+  getBlogPostById(id: string): Observable<BlogPost | undefined> {
+    const postReference = doc(this.fireStore, 'blog-posts', id);
 
-    // Delete the associated image from Firebase Storage
+    return docData(postReference, { idField: 'id' }) as Observable<
+      BlogPost | undefined
+    >;
+  }
+
+  async updateBlogPost(
+    id: string,
+    title: string,
+    content: string,
+  ): Promise<void> {
+    const postReference = doc(this.fireStore, 'blog-posts', id);
+
+    await updateDoc(postReference, { title, content });
+  }
+
+  async deleteBlogPost(id: string, imageUrl: string): Promise<void> {
+    const postReference = doc(this.fireStore, 'blog-posts', id);
+
+    await deleteDoc(postReference);
+
     if (imageUrl) {
-      try {
-        const imageStorageReference = ref(this.storage, imageUrl);
-
-        await deleteObject(imageStorageReference);
-      } catch (error) {
-        /*
-         * The Firestore post has already been deleted.
-         * Avoid failing the entire operation if the image is
-         * already missing or Storage deletion is unavailable.
-         */
-        console.warn('Post deleted, but unable to delete its image:', error);
-      }
+      await deleteObject(ref(this.storage, imageUrl));
     }
   }
 }

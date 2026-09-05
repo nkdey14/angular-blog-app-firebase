@@ -60,6 +60,7 @@
             <img
               [src]="post.imageUrl"
               [alt]="post.title"
+              (error)="handleImageError($event)"
               class="h-full w-full object-cover transition duration-300 hover:scale-105"
             />
           </div>
